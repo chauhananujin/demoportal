@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const links = [
@@ -12,7 +11,6 @@ const links = [
 ];
 
 export function Nav() {
-  const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-50 bg-brand-bg border-b border-brand-surface">
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -28,9 +26,11 @@ export function Nav() {
             </li>
           ))}
         </ul>
-        <Button asChild size="sm" className="bg-brand-primary hover:bg-brand-accent text-white">
-          <Link href="/portal/dashboard">Client Login</Link>
-        </Button>
+        <Link href="/portal/dashboard">
+          <Button size="sm" className="bg-brand-primary hover:bg-brand-accent text-white">
+            Client Login
+          </Button>
+        </Link>
       </nav>
     </header>
   );

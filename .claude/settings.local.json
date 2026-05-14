@@ -33,7 +33,10 @@
       "Bash(echo \"Exit: $?\")",
       "Bash(timeout 20 npm run dev)",
       "Bash(npx tsc *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(grep -E \"^sanity$|^@sanity\")",
+      "Bash(node -e \"require\\('/Users/achauhan/claudeproject/gstacksuper/node_modules/@vitejs/plugin-react/package.json'\\).version\")",
+      "Bash(npm run *)"
     ]
   }
 }
