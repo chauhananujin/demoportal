@@ -36,7 +36,7 @@ Both enterprise (500+ employees) and mid-market (50–500 employees) clients run
 | Auth | Clerk (SSO + enterprise SAML) |
 | Database | Supabase (PostgreSQL + RLS) |
 | UI | Tailwind CSS + shadcn/ui |
-| CMS | Sanity (marketing content) |
+| CMS | Sanity (marketing content: service pages, case studies) |
 | Deployment | Vercel |
 | Testing | Vitest + Playwright |
 | CI | GitHub Actions |
@@ -79,7 +79,7 @@ ascelios/
 - **Case Studies** — filterable by industry and service type
 - **About** — team, company story, certifications (SAP partner, AWS/Azure/GCP)
 - **Contact** — lead form + "Request a Quote" flow
-- **Blog** (optional) — Sanity-driven thought leadership for SEO
+- **Blog** — out of scope for v1; Sanity schema will include a `post` document type so it can be added in v2 without migration
 
 ### Client Portal
 
@@ -153,6 +153,7 @@ services          — id, org_id, name, type (sap|cloud), environment
 service_events    — id, service_id, status (up|degraded|down), message, timestamp
 invoices          — id, org_id, amount, status (paid|unpaid|overdue), due_date, pdf_url
 documents         — id, title, slug, category, content_mdx, visibility (public|org), org_id
+                    -- visibility=public: accessible without auth (public KB); visibility=org: portal-only
 ```
 
 Row-Level Security (RLS) on all tables. Users see only their org's data. Members cannot access the `invoices` table.
