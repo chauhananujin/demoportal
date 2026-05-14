@@ -92,7 +92,7 @@ function nextId(tickets: Ticket[]): string {
   const max = tickets.reduce((m, t) => {
     const n = parseInt(t.id.replace("TKT-", ""), 10);
     return isNaN(n) ? m : Math.max(m, n);
-  }, 4041);
+  }, 41);
   return `TKT-${String(max + 1).padStart(4, "0")}`;
 }
 
