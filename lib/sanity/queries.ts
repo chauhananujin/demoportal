@@ -27,7 +27,7 @@ export async function getServicesByCategory(category: "sap" | "cloud"): Promise<
   );
 }
 
-export async function getServiceBySlug(slug: string): Promise<Service & { body: unknown[] }> {
+export async function getServiceBySlug(slug: string): Promise<(Service & { body: unknown[] }) | null> {
   return sanityClient.fetch(
     `*[_type == "service" && slug.current == $slug][0] { _id, title, slug, category, summary, icon, body }`,
     { slug }
@@ -40,7 +40,7 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
   );
 }
 
-export async function getCaseStudyBySlug(slug: string): Promise<CaseStudy & { body: unknown[] }> {
+export async function getCaseStudyBySlug(slug: string): Promise<(CaseStudy & { body: unknown[] }) | null> {
   return sanityClient.fetch(
     `*[_type == "caseStudy" && slug.current == $slug][0] { _id, title, slug, client, industry, services, summary, publishedAt, body }`,
     { slug }

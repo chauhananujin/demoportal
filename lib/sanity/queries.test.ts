@@ -5,7 +5,7 @@ vi.mock("./client", () => ({
 }));
 
 import { sanityClient } from "./client";
-import { getServicesByCategory, getAllCaseStudies } from "./queries";
+import { getServicesByCategory, getAllCaseStudies, getServiceBySlug, getCaseStudyBySlug } from "./queries";
 
 const mockServices = [
   { _id: "1", title: "SAP Implementation", slug: { current: "sap-implementation" }, category: "sap", summary: "We implement SAP.", icon: "🔷" },
@@ -30,5 +30,43 @@ describe("getAllCaseStudies", () => {
     vi.mocked(sanityClient.fetch).mockResolvedValue([]);
     const result = await getAllCaseStudies();
     expect(Array.isArray(result)).toBe(true);
+  });
+});
+
+describe("getServiceBySlug", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("fetches a service by slug", async () => {
+    const mockService = { _id: "1", title: "SAP Implementation", slug: { current: "sap-implementation" }, category: "sap", summary: "We implement SAP.", icon: "🔷", body: [] };
+    vi.mocked(sanityClient.fetch).mockResolvedValue(mockService);
+    const result = await getServiceBySlug("sap-implementation");
+    expect(result).toEqual(mockService);
+    expect(sanityClient.fetch).toHaveBeenCalledWith(
+      expect.stringContaining("slug.current == $slug"),
+      { slug: "sap-implementation" }
+    );
+  });
+
+  it("returns null when slug does not exist", async () => {
+    vi.mocked(sanityClient.fetch).mockResolvedValue(null);
+    const result = await getServiceBySlug("nonexistent");
+    expect(result).toBeNull();
+  });
+});
+
+describe("getCaseStudyBySlug", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("fetches a case study by slug", async () => {
+    const mockStudy = { _id: "1", title: "Acme Migration", slug: { current: "acme-migration" }, client: "Acme", industry: "manufacturing", services: ["sap-implementation"], summary: "We migrated Acme.", publishedAt: "2024-01-01", body: [] };
+    vi.mocked(sanityClient.fetch).mockResolvedValue(mockStudy);
+    const result = await getCaseStudyBySlug("acme-migration");
+    expect(result).toEqual(mockStudy);
+  });
+
+  it("returns null when slug does not exist", async () => {
+    vi.mocked(sanityClient.fetch).mockResolvedValue(null);
+    const result = await getCaseStudyBySlug("nonexistent");
+    expect(result).toBeNull();
   });
 });
