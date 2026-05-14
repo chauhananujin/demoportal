@@ -1,0 +1,213 @@
+<h2>Client Portal — Dashboard Layout</h2>
+<p class="subtitle">How should the portal be structured? Click to select.</p>
+
+<div class="cards">
+
+  <!-- Option A: Sidebar nav + main content -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f1f5f9;padding:12px;border-radius:8px 8px 0 0;">
+      <div style="font-size:10px;color:#64748b;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Layout A</div>
+      <div style="display:flex;gap:4px;height:140px;">
+        <!-- Sidebar -->
+        <div style="background:#0D1F2D;border-radius:4px;width:60px;padding:8px 6px;flex-shrink:0;">
+          <div style="color:#06B6D4;font-size:8px;font-weight:700;margin-bottom:10px;">Ascelios</div>
+          <div style="background:rgba(8,145,178,0.2);border-radius:3px;padding:4px 6px;margin-bottom:3px;">
+            <div style="color:#67E8F9;font-size:7px;">⬛ Dashboard</div>
+          </div>
+          <div style="padding:4px 6px;margin-bottom:3px;"><div style="color:#64748b;font-size:7px;">🎫 Tickets</div></div>
+          <div style="padding:4px 6px;margin-bottom:3px;"><div style="color:#64748b;font-size:7px;">📡 Status</div></div>
+          <div style="padding:4px 6px;margin-bottom:3px;"><div style="color:#64748b;font-size:7px;">📚 Docs</div></div>
+          <div style="padding:4px 6px;"><div style="color:#64748b;font-size:7px;">💳 Billing</div></div>
+        </div>
+        <!-- Main content -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+          <!-- Top bar -->
+          <div style="background:white;border-radius:4px;padding:5px 8px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:8px;font-weight:600;color:#0F172A;">Dashboard</div>
+            <div style="background:#0891B2;color:white;font-size:7px;padding:2px 7px;border-radius:3px;">+ New Ticket</div>
+          </div>
+          <!-- Stats row -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;">
+            <div style="background:white;border-radius:4px;padding:6px;">
+              <div style="color:#64748b;font-size:6px;">Open Tickets</div>
+              <div style="color:#0F172A;font-size:11px;font-weight:700;">3</div>
+            </div>
+            <div style="background:white;border-radius:4px;padding:6px;">
+              <div style="color:#64748b;font-size:6px;">Services</div>
+              <div style="color:#22C55E;font-size:11px;font-weight:700;">All ✓</div>
+            </div>
+            <div style="background:white;border-radius:4px;padding:6px;">
+              <div style="color:#64748b;font-size:6px;">Next Invoice</div>
+              <div style="color:#0F172A;font-size:11px;font-weight:700;">Jun 1</div>
+            </div>
+          </div>
+          <!-- Tickets list -->
+          <div style="background:white;border-radius:4px;padding:6px;flex:1;">
+            <div style="font-size:7px;font-weight:600;color:#0F172A;margin-bottom:4px;">Recent Tickets</div>
+            <div style="border-bottom:1px solid #f1f5f9;padding-bottom:3px;margin-bottom:3px;display:flex;justify-content:space-between;">
+              <div style="font-size:6px;color:#334155;">SAP login issue</div>
+              <div style="background:#FEF3C7;color:#92400E;font-size:5px;padding:1px 4px;border-radius:2px;">Open</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <div style="font-size:6px;color:#334155;">Azure VM sizing</div>
+              <div style="background:#DCFCE7;color:#166534;font-size:5px;padding:1px 4px;border-radius:2px;">Resolved</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Sidebar Navigation</h3>
+      <p>Persistent left sidebar + main content area. Standard enterprise app pattern — familiar, efficient, works well as the portal grows.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Top nav + card grid dashboard -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f1f5f9;padding:12px;border-radius:8px 8px 0 0;">
+      <div style="font-size:10px;color:#64748b;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Layout B</div>
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <!-- Top nav -->
+        <div style="background:#0D1F2D;border-radius:4px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="color:#06B6D4;font-weight:700;font-size:9px;">Ascelios</div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="color:#94A3B8;font-size:7px;border-bottom:1px solid #06B6D4;padding-bottom:1px;">Dashboard</div>
+            <div style="color:#64748b;font-size:7px;">Tickets</div>
+            <div style="color:#64748b;font-size:7px;">Status</div>
+            <div style="color:#64748b;font-size:7px;">Docs</div>
+            <div style="color:#64748b;font-size:7px;">Billing</div>
+          </div>
+          <div style="background:#0891B2;color:white;font-size:7px;padding:2px 7px;border-radius:3px;">+ Ticket</div>
+        </div>
+        <!-- Welcome bar -->
+        <div style="background:linear-gradient(90deg,#0A2940,#0A3A4A);border-radius:4px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="color:white;font-size:8px;font-weight:600;">Good morning, Acme Corp</div>
+            <div style="color:#64748b;font-size:6px;">3 open tickets · All services operational</div>
+          </div>
+          <div style="color:#22C55E;font-size:7px;">● Operational</div>
+        </div>
+        <!-- 4-card grid -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;">
+          <div style="background:white;border-radius:4px;padding:7px;border-top:2px solid #0891B2;">
+            <div style="color:#64748b;font-size:6px;">Open Tickets</div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">3</div>
+          </div>
+          <div style="background:white;border-radius:4px;padding:7px;border-top:2px solid #22C55E;">
+            <div style="color:#64748b;font-size:6px;">Uptime</div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">99.9%</div>
+          </div>
+          <div style="background:white;border-radius:4px;padding:7px;border-top:2px solid #06B6D4;">
+            <div style="color:#64748b;font-size:6px;">Docs Read</div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">12</div>
+          </div>
+          <div style="background:white;border-radius:4px;padding:7px;border-top:2px solid #F59E0B;">
+            <div style="color:#64748b;font-size:6px;">Invoice Due</div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">Jun 1</div>
+          </div>
+        </div>
+        <!-- Bottom two panels -->
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:3px;">
+          <div style="background:white;border-radius:4px;padding:7px;">
+            <div style="font-size:7px;font-weight:600;color:#0F172A;margin-bottom:4px;">Recent Tickets</div>
+            <div style="border-bottom:1px solid #f1f5f9;padding-bottom:3px;margin-bottom:3px;display:flex;justify-content:space-between;">
+              <div style="font-size:6px;color:#334155;">SAP login issue</div>
+              <div style="background:#FEF3C7;color:#92400E;font-size:5px;padding:1px 4px;border-radius:2px;">Open</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <div style="font-size:6px;color:#334155;">Azure VM sizing</div>
+              <div style="background:#DCFCE7;color:#166534;font-size:5px;padding:1px 4px;border-radius:2px;">Resolved</div>
+            </div>
+          </div>
+          <div style="background:white;border-radius:4px;padding:7px;">
+            <div style="font-size:7px;font-weight:600;color:#0F172A;margin-bottom:4px;">Services</div>
+            <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+              <div style="width:5px;height:5px;border-radius:50%;background:#22C55E;"></div>
+              <div style="font-size:6px;color:#334155;">SAP S/4HANA</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div style="width:5px;height:5px;border-radius:50%;background:#22C55E;"></div>
+              <div style="font-size:6px;color:#334155;">Azure Production</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Top Nav + Dashboard Grid</h3>
+      <p>Horizontal nav bar, personalized welcome banner, 4-metric card row, then panels below. More spacious feel, great for users who live on the dashboard.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Sidebar + activity feed -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f1f5f9;padding:12px;border-radius:8px 8px 0 0;">
+      <div style="font-size:10px;color:#64748b;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Layout C</div>
+      <div style="display:flex;gap:4px;height:140px;">
+        <!-- Sidebar -->
+        <div style="background:#0D1F2D;border-radius:4px;width:60px;padding:8px 6px;flex-shrink:0;">
+          <div style="color:#06B6D4;font-size:8px;font-weight:700;margin-bottom:10px;">Ascelios</div>
+          <div style="background:rgba(8,145,178,0.2);border-radius:3px;padding:4px 6px;margin-bottom:3px;">
+            <div style="color:#67E8F9;font-size:7px;">⬛ Dashboard</div>
+          </div>
+          <div style="padding:4px 6px;margin-bottom:3px;"><div style="color:#64748b;font-size:7px;">🎫 Tickets</div></div>
+          <div style="padding:4px 6px;margin-bottom:3px;"><div style="color:#64748b;font-size:7px;">📡 Status</div></div>
+          <div style="padding:4px 6px;margin-bottom:3px;"><div style="color:#64748b;font-size:7px;">📚 Docs</div></div>
+          <div style="padding:4px 6px;"><div style="color:#64748b;font-size:7px;">💳 Billing</div></div>
+        </div>
+        <!-- Main: 2-col layout -->
+        <div style="flex:1;display:flex;gap:3px;">
+          <!-- Left: stats + tickets -->
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+            <div style="background:white;border-radius:4px;padding:5px 8px;display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:8px;font-weight:600;color:#0F172A;">Dashboard</div>
+              <div style="background:#0891B2;color:white;font-size:7px;padding:2px 7px;border-radius:3px;">+ Ticket</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+              <div style="background:white;border-radius:4px;padding:5px;">
+                <div style="color:#64748b;font-size:6px;">Tickets</div>
+                <div style="font-size:10px;font-weight:700;color:#0F172A;">3 open</div>
+              </div>
+              <div style="background:white;border-radius:4px;padding:5px;">
+                <div style="color:#64748b;font-size:6px;">Uptime</div>
+                <div style="font-size:10px;font-weight:700;color:#22C55E;">99.9%</div>
+              </div>
+            </div>
+            <div style="background:white;border-radius:4px;padding:5px;flex:1;">
+              <div style="font-size:6px;font-weight:600;color:#0F172A;margin-bottom:3px;">Active Tickets</div>
+              <div style="border-bottom:1px solid #f1f5f9;padding-bottom:2px;margin-bottom:2px;">
+                <div style="font-size:6px;color:#334155;">SAP login issue</div>
+                <div style="font-size:5px;color:#94A3B8;">Assigned · 2h ago</div>
+              </div>
+              <div>
+                <div style="font-size:6px;color:#334155;">Azure VM sizing</div>
+                <div style="font-size:5px;color:#94A3B8;">In Progress · 1d ago</div>
+              </div>
+            </div>
+          </div>
+          <!-- Right: activity feed -->
+          <div style="width:70px;background:white;border-radius:4px;padding:6px;">
+            <div style="font-size:6px;font-weight:600;color:#0F172A;margin-bottom:4px;">Activity</div>
+            <div style="border-left:2px solid #0891B2;padding-left:4px;margin-bottom:5px;">
+              <div style="font-size:5px;color:#334155;">Ticket #42 updated</div>
+              <div style="font-size:5px;color:#94A3B8;">10 min ago</div>
+            </div>
+            <div style="border-left:2px solid #06B6D4;padding-left:4px;margin-bottom:5px;">
+              <div style="font-size:5px;color:#334155;">Invoice ready</div>
+              <div style="font-size:5px;color:#94A3B8;">2h ago</div>
+            </div>
+            <div style="border-left:2px solid #64748b;padding-left:4px;">
+              <div style="font-size:5px;color:#334155;">Deploy completed</div>
+              <div style="font-size:5px;color:#94A3B8;">Yesterday</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Sidebar + Activity Feed</h3>
+      <p>Sidebar nav, two-column dashboard with tickets on the left and a live activity feed on the right. Best for power users who want a real-time pulse on their account.</p>
+    </div>
+  </div>
+
+</div>

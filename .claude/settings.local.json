@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(gh api *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(git --version)",
+      "Bash(bun --version)",
+      "Bash(curl -fsSL https://bun.sh/install)",
+      "Bash(bash)",
+      "Bash(export PATH=\"$HOME/.bun/bin:$PATH\")",
+      "Bash(git clone *)",
+      "Read(//Users/achauhan/.claude/skills/gstack/**)",
+      "Bash(./setup)",
+      "Bash(python3 -m json.tool)",
+      "Bash(~/.claude/skills/gstack/bin/gstack-global-discover)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(k\\) for k in data.keys\\(\\)]\")",
+      "Bash(python3 -c ' *)",
+      "Bash(git ls-remote *)",
+      "Read(//private/tmp/superpowers-preview/skills/**)",
+      "Read(//private/tmp/superpowers-preview/**)",
+      "Bash(xargs cat)",
+      "Bash(~/.claude/skills/superpowers/scripts/start-server.sh *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npx create-next-app@latest *)",
+      "Read(//Users/achauhan/claudeproject/**)",
+      "Bash(mv gstacksuper/.superpowers /tmp/superpowers_backup)",
+      "Bash(mv /tmp/superpowers_backup gstacksuper/.superpowers)",
+      "Bash(npm install *)",
+      "Bash(npx shadcn@latest *)",
+      "Bash(pkill -f \"shadcn\")",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(timeout 20 npm run dev)",
+      "Bash(npx tsc *)",
+      "Bash(git *)"
+    ]
+  }
+}
