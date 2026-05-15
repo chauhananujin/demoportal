@@ -9,6 +9,7 @@ export type PortalAction =
   | "reject:ticket"
   | "request:provision"
   | "request:sap-operation"
+  | "request:infra-operation"
   | "request:add-funds";
 
 export interface TicketApprovalStep {
@@ -19,7 +20,7 @@ export interface TicketApprovalStep {
 }
 
 export type TicketStatus = "pending_manager" | "pending_admin" | "approved" | "rejected";
-export type TicketType = "provision" | "sap-operation" | "billing" | "support";
+export type TicketType = "provision" | "sap-operation" | "infra-operation" | "billing" | "support";
 
 export interface TicketNote {
   by: string;

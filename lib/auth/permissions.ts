@@ -7,6 +7,7 @@ const PERMISSIONS: Record<Role, PortalAction[]> = {
     "create:ticket",
     "request:provision",
     "request:sap-operation",
+    "request:infra-operation",
   ],
   manager: [
     "view:tickets",
@@ -16,6 +17,7 @@ const PERMISSIONS: Record<Role, PortalAction[]> = {
     "reject:ticket",
     "request:provision",
     "request:sap-operation",
+    "request:infra-operation",
     "request:add-funds",
   ],
   admin: [
@@ -27,6 +29,7 @@ const PERMISSIONS: Record<Role, PortalAction[]> = {
     "reject:ticket",
     "request:provision",
     "request:sap-operation",
+    "request:infra-operation",
     "request:add-funds",
   ],
 };

@@ -23,10 +23,11 @@ const STATUS_STYLE: Record<TicketStatus, string> = {
 };
 
 const TYPE_LABEL: Record<string, string> = {
-  provision:       "Provision",
-  "sap-operation": "SAP Op",
-  billing:         "Billing",
-  support:         "Support",
+  provision:          "Provision",
+  "sap-operation":    "SAP Op",
+  "infra-operation":  "Infra Op",
+  billing:            "Billing",
+  support:            "Support",
 };
 
 const ROLE_BADGE: Record<Role, string> = {

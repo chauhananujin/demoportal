@@ -17,10 +17,12 @@ export function Footer() {
           </ul>
         </div>
         <div>
-          <p className="text-white font-semibold text-sm mb-3">Cloud Services</p>
+          <p className="text-white font-semibold text-sm mb-3">Cloud & DevOps</p>
           <ul className="space-y-2">
-            {["Infrastructure", "Migration", "Managed Services"].map((s) => (
-              <li key={s}><span className="text-slate-400 text-sm">{s}</span></li>
+            {[["Cloud Services", "/services/cloud"], ["DevOps as a Service", "/services/devops"]].map(([label, href]) => (
+              <li key={href}>
+                <Link href={href} className="text-slate-400 text-sm hover:text-white transition-colors">{label}</Link>
+              </li>
             ))}
           </ul>
         </div>

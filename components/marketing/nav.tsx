@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 const links = [
   { href: "/services/sap", label: "SAP Services" },
   { href: "/services/cloud", label: "Cloud Services" },
+  { href: "/services/devops", label: "DevOps" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -28,7 +29,7 @@ export function Nav() {
         </ul>
         <Link href="/portal/dashboard">
           <Button size="sm" className="bg-brand-primary hover:bg-brand-accent text-white">
-            Client Login
+            Elios Login
           </Button>
         </Link>
       </nav>

@@ -40,6 +40,18 @@ const navItems = [
     ),
   },
   {
+    href: "/portal/backups",
+    label: "Backups",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <ellipse cx="8" cy="5" rx="5" ry="2" stroke="currentColor" strokeWidth="1.4"/>
+        <path d="M3 5v6a5 2 0 0 0 10 0V5" stroke="currentColor" strokeWidth="1.4"/>
+        <path d="M3 8a5 2 0 0 0 10 0" stroke="currentColor" strokeWidth="1.4"/>
+        <path d="M8 11v2M6.5 12.5l1.5 1 1.5-1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
+  {
     href: "/portal/services",
     label: "Services",
     icon: (
@@ -56,6 +68,16 @@ const navItems = [
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M9 1H3.667A1.333 1.333 0 0 0 2.333 2.333V13.667A1.333 1.333 0 0 0 3.667 15h8.666A1.333 1.333 0 0 0 13.667 13.667V5.667L9 1Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
         <path d="M9 1v4.667h4.667M5.333 8.667h5.334M5.333 11.333h5.334M5.333 6H7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    href: "/portal/migration",
+    label: "Migration",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M1.333 8h13.334M10 3.333L14.667 8 10 12.667" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M5.333 3.333L1.333 8l4 4.667" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" opacity="0.4"/>
       </svg>
     ),
   },

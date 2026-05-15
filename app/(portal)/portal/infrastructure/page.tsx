@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@/lib/auth/auth-context";
 import { Button } from "@/components/ui/button";
 import { SAPManagementWidget } from "@/components/portal/sap-management-widget";
+import { ResourceManagementWidget } from "@/components/portal/resource-management-widget";
 
 const resources = [
   {
@@ -259,34 +261,57 @@ function ResourceDetailPanel({
   resource,
   metrics,
   onClose,
+  showCost,
 }: {
   resource: Resource;
   metrics: ResourceMetrics;
   onClose: () => void;
+  showCost: boolean;
 }) {
   const icon = typeIcon[resource.type] ?? typeIcon["VM Group"];
 
   return (
-    <div
-      data-testid="resource-detail-panel"
-      className="mt-4 mb-6 bg-brand-surface border border-white/8 rounded-xl overflow-hidden"
-    >
-      {/* Header */}
-      <div className="border-b border-white/8 px-6 py-4 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-slate-400" aria-hidden="true">
-              {icon}
+    <>
+      <style>{`@keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }`}</style>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+        onClick={onClose}
+      />
+      {/* Drawer */}
+      <div
+        data-testid="resource-detail-panel"
+        className="fixed right-0 top-0 h-screen w-[480px] z-50 flex flex-col overflow-hidden shadow-2xl"
+        style={{ animation: "slideInRight 250ms ease-out both", background: "#0b1e2e", borderLeft: "1px solid rgba(255,255,255,0.08)" }}
+      >
+        {/* Header — sticky */}
+        <div className="shrink-0 border-b border-white/8 px-5 py-4 flex items-start justify-between gap-3" style={{ background: "#0b1e2e" }}>
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-slate-400" aria-hidden="true">
+                {icon}
+              </svg>
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-white font-mono truncate">{resource.name}</p>
+              <p className="text-xs text-slate-500">
+                {resource.type} · <span className={cloudColor[resource.cloud]}>{resource.cloud}</span> · {resource.region}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-7 h-7 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors shrink-0 mt-0.5"
+            aria-label="Close panel"
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
-          </div>
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-white font-mono truncate">{resource.name}</p>
-            <p className="text-xs text-slate-500">
-              {resource.type} · <span className={cloudColor[resource.cloud]}>{resource.cloud}</span> · {resource.region}
-            </p>
-          </div>
+          </button>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+
+        {/* Meta row */}
+        <div className="shrink-0 px-5 py-3 border-b border-white/6 flex items-center gap-3 flex-wrap">
           <span className={`font-mono text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border ${statusStyle[resource.status]}`}>
             {resource.status === "provisioning" ? (
               <span className="flex items-center gap-1">
@@ -296,43 +321,36 @@ function ResourceDetailPanel({
             ) : resource.status}
           </span>
           <span className="text-xs text-slate-500 font-mono">{resource.size}</span>
-          <span className="text-xs text-slate-400">{resource.cost}</span>
-          <span className="text-xs text-slate-600">Created {resource.created}</span>
-          <button
-            onClick={onClose}
-            className="w-6 h-6 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors ml-2"
-            aria-label="Close panel"
-          >
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-              <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </button>
+          {showCost && <span className="text-xs text-slate-400">{resource.cost}</span>}
+          <span className="text-xs text-slate-600 ml-auto">Created {resource.created}</span>
+        </div>
+
+        {/* Charts section — scrollable */}
+        <div className="flex-1 overflow-y-auto">
+          {metrics.note === "provisioning" ? (
+            <div className="px-5 py-12 flex items-center justify-center">
+              <p className="text-sm text-slate-500">Metrics collecting — resource is still provisioning</p>
+            </div>
+          ) : metrics.note === "terminated" ? (
+            <div className="px-5 py-12 flex items-center justify-center">
+              <p className="text-sm text-slate-500">Resource terminated — no metrics available</p>
+            </div>
+          ) : metrics.note === "storage" ? (
+            <div className="px-5 py-5 grid grid-cols-2 gap-4">
+              <MetricCard title="Network In" data={metrics.networkIn} color="#22d3ee" unit="MB/s" gradientId={`${resource.id}-netIn`} />
+              <MetricCard title="Network Out" data={metrics.networkOut} color="#34d399" unit="MB/s" gradientId={`${resource.id}-netOut`} />
+            </div>
+          ) : (
+            <div className="px-5 py-5 grid grid-cols-2 gap-4">
+              <MetricCard title="CPU %" data={metrics.cpu} color="#f59e0b" unit="%" gradientId={`${resource.id}-cpu`} />
+              <MetricCard title="Memory %" data={metrics.memory} color="#818cf8" unit="%" gradientId={`${resource.id}-mem`} />
+              <MetricCard title="Network In" data={metrics.networkIn} color="#22d3ee" unit="MB/s" gradientId={`${resource.id}-netIn`} />
+              <MetricCard title="Network Out" data={metrics.networkOut} color="#34d399" unit="MB/s" gradientId={`${resource.id}-netOut`} />
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Charts section */}
-      {metrics.note === "provisioning" ? (
-        <div className="px-6 py-10 flex items-center justify-center">
-          <p className="text-sm text-slate-500">Metrics collecting — resource is still provisioning</p>
-        </div>
-      ) : metrics.note === "terminated" ? (
-        <div className="px-6 py-10 flex items-center justify-center">
-          <p className="text-sm text-slate-500">Resource terminated — no metrics available</p>
-        </div>
-      ) : metrics.note === "storage" ? (
-        <div className="px-6 py-5 grid grid-cols-2 gap-4">
-          <MetricCard title="Network In" data={metrics.networkIn} color="#22d3ee" unit="MB/s" gradientId={`${resource.id}-netIn`} />
-          <MetricCard title="Network Out" data={metrics.networkOut} color="#34d399" unit="MB/s" gradientId={`${resource.id}-netOut`} />
-        </div>
-      ) : (
-        <div className="px-6 py-5 grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <MetricCard title="CPU %" data={metrics.cpu} color="#f59e0b" unit="%" gradientId={`${resource.id}-cpu`} />
-          <MetricCard title="Memory %" data={metrics.memory} color="#818cf8" unit="%" gradientId={`${resource.id}-mem`} />
-          <MetricCard title="Network In" data={metrics.networkIn} color="#22d3ee" unit="MB/s" gradientId={`${resource.id}-netIn`} />
-          <MetricCard title="Network Out" data={metrics.networkOut} color="#34d399" unit="MB/s" gradientId={`${resource.id}-netOut`} />
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 
@@ -346,15 +364,17 @@ const totalCost = resources
 
 export default function InfrastructurePage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const { user } = useAuth();
+  const showCost = user?.role !== "user";
 
   return (
-    <div className="px-8 py-8">
+    <div className="px-8 py-8 relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold text-white">Infrastructure</h1>
           <p className="text-slate-500 text-sm mt-1">
-            {active} active · {prov} provisioning · ${totalCost.toLocaleString()}/mo estimated
+            {active} active · {prov} provisioning{showCost && ` · $${totalCost.toLocaleString()}/mo estimated`}
           </p>
         </div>
         <Link href="/portal/infrastructure/new">
@@ -404,10 +424,17 @@ export default function InfrastructurePage() {
                   <p className="text-slate-500 mb-0.5">Size</p>
                   <p className="text-slate-300 font-mono text-[11px] truncate">{r.size}</p>
                 </div>
-                <div>
-                  <p className="text-slate-500 mb-0.5">Est. cost</p>
-                  <p className="text-slate-300">{r.cost}</p>
-                </div>
+                {showCost ? (
+                  <div>
+                    <p className="text-slate-500 mb-0.5">Est. cost</p>
+                    <p className="text-slate-300">{r.cost}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-slate-500 mb-0.5">Type</p>
+                    <p className="text-slate-300 truncate">{r.type}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-slate-500 mb-0.5">Created</p>
                   <p className="text-slate-300">{r.created}</p>
@@ -435,21 +462,30 @@ export default function InfrastructurePage() {
         </Link>
       </div>
 
-      {/* Resource detail panel */}
-      {selectedId && (() => {
-        const r = resources.find((res) => res.id === selectedId)!;
-        const m = resourceMetrics[selectedId] ?? { cpu: [], memory: [], networkIn: [], networkOut: [] };
-        return <ResourceDetailPanel resource={r} metrics={m} onClose={() => setSelectedId(null)} />;
-      })()}
-
-      {/* Instance Management */}
+      {/* Resource Management */}
       <div className="mt-10">
         <div className="flex items-center gap-3 mb-5">
-          <h2 className="text-lg font-semibold text-white">Instance Management</h2>
+          <h2 className="text-lg font-semibold text-white">Resource Management</h2>
+          <div className="flex-1 h-px bg-white/8" />
+        </div>
+        <ResourceManagementWidget />
+      </div>
+
+      {/* SAP Instance Management */}
+      <div className="mt-8">
+        <div className="flex items-center gap-3 mb-5">
+          <h2 className="text-lg font-semibold text-white">SAP Instance Management</h2>
           <div className="flex-1 h-px bg-white/8" />
         </div>
         <SAPManagementWidget />
       </div>
+
+      {/* Floating detail drawer */}
+      {selectedId && (() => {
+        const r = resources.find((res) => res.id === selectedId)!;
+        const m = resourceMetrics[selectedId] ?? { cpu: [], memory: [], networkIn: [], networkOut: [] };
+        return <ResourceDetailPanel resource={r} metrics={m} onClose={() => setSelectedId(null)} showCost={showCost} />;
+      })()}
     </div>
   );
 }

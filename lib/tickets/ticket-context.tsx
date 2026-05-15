@@ -3,10 +3,18 @@ import {
   createContext, useContext, useEffect, useState,
   useCallback, type ReactNode,
 } from "react";
-import type { Ticket, CreateTicketInput, TicketApprovalStep } from "./types";
-import { useAuth } from "@/lib/auth/auth-context";
+import type { Ticket, CreateTicketInput, TicketApprovalStep, Role } from "./types";
 
 const TICKETS_KEY = "ascelios_tickets";
+const SESSION_KEY = "ascelios_session";
+
+function getSessionUser(): { email: string; role: Role } {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (raw) return JSON.parse(raw) as { email: string; role: Role };
+  } catch { /* ignore */ }
+  return { email: "unknown", role: "user" };
+}
 
 const now = Date.now();
 const SEED_TICKETS: Ticket[] = [
@@ -98,7 +106,6 @@ function nextId(tickets: Ticket[]): string {
 
 export function TicketProvider({ children }: { children: ReactNode }) {
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const { user } = useAuth();
 
   useEffect(() => {
     const raw = localStorage.getItem(TICKETS_KEY);
@@ -118,12 +125,13 @@ export function TicketProvider({ children }: { children: ReactNode }) {
 
   const createTicket = useCallback(
     (input: CreateTicketInput): Ticket => {
+      const { email, role } = getSessionUser();
       const ticket: Ticket = {
         id: nextId(tickets),
         title: input.title,
         type: input.type,
-        requestedBy: user?.email ?? "unknown",
-        requestedByRole: user?.role ?? "user",
+        requestedBy: email,
+        requestedByRole: role,
         createdAt: new Date().toISOString(),
         status: "pending_manager",
         managerApproval: null,
@@ -135,13 +143,13 @@ export function TicketProvider({ children }: { children: ReactNode }) {
       save(next);
       return ticket;
     },
-    [tickets, user],
+    [tickets],
   );
 
   const approveStage1 = useCallback(
     (id: string, note: string) => {
       const step: TicketApprovalStep = {
-        by: user?.email ?? "unknown",
+        by: getSessionUser().email,
         at: new Date().toISOString(),
         note,
         outcome: "approved",
@@ -154,13 +162,13 @@ export function TicketProvider({ children }: { children: ReactNode }) {
         ),
       );
     },
-    [tickets, user],
+    [tickets],
   );
 
   const approveStage2 = useCallback(
     (id: string, note: string) => {
       const step: TicketApprovalStep = {
-        by: user?.email ?? "unknown",
+        by: getSessionUser().email,
         at: new Date().toISOString(),
         note,
         outcome: "approved",
@@ -173,13 +181,13 @@ export function TicketProvider({ children }: { children: ReactNode }) {
         ),
       );
     },
-    [tickets, user],
+    [tickets],
   );
 
   const rejectTicket = useCallback(
     (id: string, note: string) => {
       const step: TicketApprovalStep = {
-        by: user?.email ?? "unknown",
+        by: getSessionUser().email,
         at: new Date().toISOString(),
         note,
         outcome: "rejected",
@@ -195,19 +203,19 @@ export function TicketProvider({ children }: { children: ReactNode }) {
         }),
       );
     },
-    [tickets, user],
+    [tickets],
   );
 
   const addNote = useCallback(
     (id: string, text: string) => {
       const note = {
-        by: user?.email ?? "unknown",
+        by: getSessionUser().email,
         at: new Date().toISOString(),
         text,
       };
       save(tickets.map((t) => (t.id === id ? { ...t, notes: [...t.notes, note] } : t)));
     },
-    [tickets, user],
+    [tickets],
   );
 
   return (
