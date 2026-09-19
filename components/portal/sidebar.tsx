@@ -4,8 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth/auth-context";
+import { usePermission } from "@/lib/auth/use-permission";
+import { usePortalTheme } from "@/lib/portal/theme-context";
+import type { PortalAction } from "@/lib/tickets/types";
 
-const navItems = [
+const navItems: { href: string; label: string; icon: React.ReactNode; gate?: PortalAction }[] = [
   {
     href: "/portal/dashboard",
     label: "Dashboard",
@@ -19,6 +22,15 @@ const navItems = [
     ),
   },
   {
+    href: "/portal/monitoring",
+    label: "Monitoring",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M1 9h2.5l1.5-5 2 9 1.5-4 1.5 3h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
+  {
     href: "/portal/infrastructure",
     label: "Infrastructure",
     icon: (
@@ -27,6 +39,27 @@ const navItems = [
         <rect x="1" y="2" width="14" height="5" rx="1" stroke="currentColor" strokeWidth="1.4"/>
         <circle cx="12.5" cy="4.5" r="1" fill="currentColor"/>
         <circle cx="12.5" cy="11.5" r="1" fill="currentColor"/>
+      </svg>
+    ),
+  },
+  {
+    href: "/onboarding",
+    label: "Onboarding",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="6" cy="5.333" r="2.333" stroke="currentColor" strokeWidth="1.4"/>
+        <path d="M1.333 13.333c0-2.577 2.089-4.666 4.667-4.666s4.667 2.089 4.667 4.666" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+        <path d="M12.667 5.333v4M14.667 7.333h-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    href: "/portal/tenants",
+    label: "Tenants",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 1.5L1.5 5l6.5 3.5L14.5 5 8 1.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+        <path d="M1.5 8L8 11.5 14.5 8M1.5 11L8 14.5 14.5 11" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
       </svg>
     ),
   },
@@ -103,6 +136,19 @@ const navItems = [
     ),
   },
   {
+    href: "/portal/admin/users",
+    label: "Users",
+    gate: "manage:users",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="6" cy="6" r="2.5" stroke="currentColor" strokeWidth="1.4"/>
+        <path d="M1.333 14c0-2.577 2.089-4.667 4.667-4.667S10.667 11.423 10.667 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+        <circle cx="12" cy="5" r="1.667" stroke="currentColor" strokeWidth="1.4"/>
+        <path d="M10 9.333A3.333 3.333 0 0 1 14.667 12.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
     href: "/portal/settings",
     label: "Settings",
     icon: (
@@ -117,13 +163,20 @@ const navItems = [
 export function PortalSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = usePortalTheme();
+  const canManageUsers = usePermission("manage:users");
+  const visibleItems = navItems.filter((item) => {
+    if (item.gate === "manage:users") return canManageUsers;
+    return true;
+  });
 
   return (
     <aside className="w-60 shrink-0 bg-brand-bg border-r border-brand-surface flex flex-col h-screen sticky top-0">
       {/* Logo */}
-      <div className="px-5 h-16 flex items-center border-b border-brand-surface">
-        <Link href="/" className="text-brand-accent font-bold text-lg tracking-tight">
-          Ascelios
+      <div className="px-5 h-20 flex items-center border-b border-brand-surface">
+        <Link href="/" aria-label="Ascelios — home" className="flex items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/ascelios-logo.svg" alt="Ascelios" className="h-[60px] w-auto" />
         </Link>
         <span className="ml-2 font-mono text-[10px] uppercase tracking-widest text-slate-500 border border-slate-700 rounded px-1.5 py-0.5">
           Portal
@@ -132,7 +185,7 @@ export function PortalSidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {navItems.map((item) => {
+        {visibleItems.map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
             <Link
@@ -153,6 +206,62 @@ export function PortalSidebar() {
           );
         })}
       </nav>
+
+      {/* Theme toggle */}
+      <div className="px-3 pb-2">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+          className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border border-white/8 bg-white/3 text-xs text-slate-400 hover:text-white hover:bg-white/5 hover:border-white/15 transition-colors"
+        >
+          <span className="inline-flex items-center gap-2">
+            {theme === "dark" ? (
+              // Sun icon (action: switch TO light)
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="2.6" stroke="currentColor" strokeWidth="1.3"/>
+                <path d="M7 1.5v1.4M7 11.1v1.4M1.5 7h1.4M11.1 7h1.4M3.1 3.1l1 1M9.9 9.9l1 1M3.1 10.9l1-1M9.9 4.1l1-1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            ) : (
+              // Moon icon (action: switch TO dark)
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M12 8.4A5.5 5.5 0 0 1 5.6 2 5.5 5.5 0 1 0 12 8.4Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
+              </svg>
+            )}
+            {theme === "dark" ? "Light theme" : "Dark theme"}
+          </span>
+          <span
+            className={cn(
+              "inline-flex items-center font-mono text-[9px] uppercase tracking-wider border rounded px-1.5 py-0.5",
+              theme === "dark"
+                ? "text-slate-500 border-white/10 bg-black/20"
+                : "text-brand-accent border-brand-accent/30 bg-brand-accent/10",
+            )}
+          >
+            {theme}
+          </span>
+        </button>
+      </div>
+
+      {/* Command palette hint */}
+      <div className="px-3 pb-3">
+        <div
+          className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg border border-white/8 bg-white/3 text-xs text-slate-400"
+          title="Press ⌘K (or Ctrl+K) anywhere"
+        >
+          <span className="inline-flex items-center gap-2">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7a5 5 0 1 1 10 0A5 5 0 0 1 2 7Z" stroke="currentColor" strokeWidth="1.3"/>
+              <path d="M5.5 6.5c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5c0 .7-1.5 1-1.5 1.8M7 9.7v0" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+            </svg>
+            Open command bar
+          </span>
+          <kbd className="inline-flex items-center font-mono text-[10px] text-slate-500 border border-white/10 rounded px-1.5 py-0.5 bg-black/20">
+            ⌘K
+          </kbd>
+        </div>
+      </div>
 
       {/* Account */}
       <div className="px-4 py-4 border-t border-brand-surface">

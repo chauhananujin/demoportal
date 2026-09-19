@@ -26,4 +26,10 @@ describe("hasPermission", () => {
     expect(hasPermission("admin", "reject:ticket")).toBe(true);
     expect(hasPermission("admin", "request:add-funds")).toBe(true);
   });
+
+  it("admin and manager can manage users; user cannot", () => {
+    expect(hasPermission("admin", "manage:users")).toBe(true);
+    expect(hasPermission("manager", "manage:users")).toBe(true);
+    expect(hasPermission("user", "manage:users")).toBe(false);
+  });
 });

@@ -29,9 +29,10 @@ export default function LoginPage() {
     <div className="min-h-screen bg-brand-bg flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <span className="text-brand-accent font-bold text-2xl tracking-tight">Ascelios</span>
-          <p className="text-slate-400 text-sm mt-1">Client Portal — Elios Login</p>
+        <div className="flex flex-col items-center mb-8">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/ascelios-logo.svg" alt="Ascelios" className="h-20 w-auto" />
+          <p className="text-slate-400 text-sm mt-2">Client Portal — Elios Login</p>
         </div>
 
         {/* Form card */}

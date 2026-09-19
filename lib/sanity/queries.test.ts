@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("./client", () => ({
   sanityClient: { fetch: vi.fn() },
+  isSanityConfigured: true,
 }));
 
 import { sanityClient } from "./client";
@@ -68,5 +69,26 @@ describe("getCaseStudyBySlug", () => {
     vi.mocked(sanityClient.fetch).mockResolvedValue(null as never);
     const result = await getCaseStudyBySlug("nonexistent");
     expect(result).toBeNull();
+  });
+});
+
+describe("when Sanity is not configured", () => {
+  it("short-circuits to empty results without hitting the network", async () => {
+    vi.resetModules();
+    vi.doMock("./client", () => ({
+      sanityClient: { fetch: vi.fn() },
+      isSanityConfigured: false,
+    }));
+    const queries = await import("./queries");
+    const { sanityClient: mockedClient } = await import("./client");
+
+    expect(await queries.getServicesByCategory("sap")).toEqual([]);
+    expect(await queries.getAllCaseStudies()).toEqual([]);
+    expect(await queries.getServiceBySlug("x")).toBeNull();
+    expect(await queries.getCaseStudyBySlug("x")).toBeNull();
+    expect(mockedClient.fetch).not.toHaveBeenCalled();
+
+    vi.doUnmock("./client");
+    vi.resetModules();
   });
 });

@@ -1,0 +1,79 @@
+<svg width="380" height="90" viewBox="0 0 380 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Ascelios primary logo">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Syne:wght@800&amp;family=Inter:wght@400&amp;display=swap');
+      .hs  { animation: hex-spin     22s linear infinite; transform-origin: 45px 45px; }
+      .hsr { animation: hex-spin-rev 16s linear infinite; transform-origin: 45px 45px; }
+      .hsm { animation: hex-spin-med 32s linear infinite; transform-origin: 45px 45px; }
+      .b1  { animation: blink 2.4s ease-in-out 0s   infinite; }
+      .b2  { animation: blink 2.4s ease-in-out .4s  infinite; }
+      .b3  { animation: blink 2.4s ease-in-out .8s  infinite; }
+      .b4  { animation: blink 2.4s ease-in-out 1.2s infinite; }
+      .b5  { animation: blink 2.4s ease-in-out 1.6s infinite; }
+      .b6  { animation: blink 2.4s ease-in-out 2.0s infinite; }
+      @keyframes hex-spin     { to { transform: rotate(360deg);  } }
+      @keyframes hex-spin-rev { to { transform: rotate(-360deg); } }
+      @keyframes hex-spin-med { to { transform: rotate(360deg);  } }
+      @keyframes blink        { 0%,100%{opacity:1;} 50%{opacity:.15;} }
+      @media (prefers-reduced-motion: reduce) {
+        .hs,.hsr,.hsm,.b1,.b2,.b3,.b4,.b5,.b6 { animation: none; }
+      }
+    </style>
+    <radialGradient id="cPrimary" cx="35%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#CFFAFE"/>
+      <stop offset="100%" stop-color="#0E7490"/>
+    </radialGradient>
+    <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer hexagon -->
+  <g class="hs">
+    <polygon points="45,4 79.6,22.5 79.6,67.5 45,86 10.4,67.5 10.4,22.5"
+      stroke="#0891B2" stroke-width="1" fill="none" opacity=".35"/>
+  </g>
+  <!-- Mid hexagon counter-rotate -->
+  <g class="hsr">
+    <polygon points="45,14 71.3,29 71.3,61 45,76 18.7,61 18.7,29"
+      stroke="#67E8F9" stroke-width=".8" fill="none" opacity=".25"/>
+  </g>
+  <!-- Inner diamond -->
+  <g class="hsm">
+    <polygon points="45,26 59,45 45,64 31,45"
+      stroke="#06B6D4" stroke-width=".7" fill="none" opacity=".2"/>
+  </g>
+
+  <!-- Vertex dots -->
+  <g class="hs">
+    <circle class="b1" cx="45"   cy="4"    r="3"   fill="#67E8F9"/>
+    <circle class="b2" cx="79.6" cy="22.5" r="2.5" fill="#06B6D4" opacity=".8"/>
+    <circle class="b3" cx="79.6" cy="67.5" r="2.5" fill="#67E8F9" opacity=".6"/>
+    <circle class="b4" cx="45"   cy="86"   r="2.5" fill="#06B6D4" opacity=".45"/>
+    <circle class="b5" cx="10.4" cy="67.5" r="2"   fill="#67E8F9" opacity=".3"/>
+    <circle class="b6" cx="10.4" cy="22.5" r="2"   fill="#0891B2" opacity=".25"/>
+  </g>
+
+  <!-- Core -->
+  <circle cx="45" cy="45" r="21" fill="#06B6D4" opacity=".08"/>
+  <circle cx="45" cy="45" r="17" fill="url(#cPrimary)"/>
+
+  <!-- Monogram -->
+  <text x="45" y="50" text-anchor="middle"
+    font-family="'Syne', sans-serif" font-weight="800"
+    font-size="11" letter-spacing="1.5" fill="#FFFFFF">ASC</text>
+
+  <!-- Wordmark -->
+  <text x="104" y="38"
+    font-family="'Syne', sans-serif" font-weight="800"
+    font-size="30" letter-spacing="3" fill="#FFFFFF">ASCELIOS</text>
+
+  <!-- Tagline -->
+  <text x="106" y="58"
+    font-family="'Inter', sans-serif" font-weight="400"
+    font-size="9.5" letter-spacing="3.5" fill="#94A3B8">CLOUD · INTELLIGENCE · STRATEGY</text>
+
+  <!-- Accent bar -->
+  <rect x="106" y="64" width="270" height="1.5" rx=".75" fill="url(#barGrad)" opacity=".55"/>
+</svg>

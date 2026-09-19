@@ -7,11 +7,11 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          bg: "#0D1F2D",
-          surface: "#0A2940",
-          primary: "#0891B2",
-          accent: "#06B6D4",
-          "accent-light": "#67E8F9",
+          bg: "var(--brand-bg)",
+          surface: "var(--brand-surface)",
+          primary: "var(--brand-primary)",
+          accent: "var(--brand-accent)",
+          "accent-light": "var(--brand-accent-light)",
         },
       },
     },

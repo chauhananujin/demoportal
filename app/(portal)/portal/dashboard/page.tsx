@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth/auth-context";
+import { useTenants } from "@/lib/onboarding/tenant-context";
+import { PROVISIONING_STAGES } from "@/lib/onboarding/types";
 
 const finopsSteps = [
   { step: "1", label: "Identify", desc: "Surface waste via usage analytics and tagging audits" },
@@ -162,6 +164,53 @@ const cloudBadge: Record<string, string> = {
   GCP:   "text-emerald-400",
 };
 
+function ProvisioningBanner() {
+  const { tenants } = useTenants();
+  const provisioning = tenants.filter((t) => t.status === "provisioning");
+  if (provisioning.length === 0) return null;
+  const lastIndex = PROVISIONING_STAGES.length - 1;
+  return (
+    <div className="bg-brand-primary/10 border border-brand-primary/30 rounded-xl p-5 mb-6">
+      <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
+        <div>
+          <p className="font-mono text-[11px] uppercase tracking-widest text-brand-accent mb-1">
+            Provisioning in progress
+          </p>
+          <p className="text-white text-sm font-semibold">
+            {provisioning.length} tenant{provisioning.length === 1 ? "" : "s"} being provisioned
+          </p>
+        </div>
+        <Link
+          href="/portal/tenants"
+          className="text-xs text-brand-accent hover:text-brand-accent-light border-b border-brand-accent/40 hover:border-brand-accent-light pb-px"
+        >
+          View all tenants →
+        </Link>
+      </div>
+      <div className="space-y-3">
+        {provisioning.slice(0, 3).map((t) => {
+          const pct = Math.min(100, Math.round(((t.stageIndex + 1) / PROVISIONING_STAGES.length) * 100));
+          const stage = PROVISIONING_STAGES[Math.min(t.stageIndex, lastIndex)];
+          return (
+            <div key={t.id}>
+              <div className="flex items-center justify-between text-xs mb-1.5">
+                <span className="text-white font-mono">{t.name}</span>
+                <span className="text-slate-400">{stage} · {pct}%</span>
+              </div>
+              <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-brand-primary to-brand-accent transition-all duration-700"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const { user } = useAuth();
   const isUser = user?.role === "user";
@@ -181,6 +230,8 @@ export default function DashboardPage() {
           </Button>
         </Link>
       </div>
+
+      <ProvisioningBanner />
 
       {/* Stats */}
       <div className={`grid gap-4 mb-8 ${isUser ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-2 lg:grid-cols-4"}`}>

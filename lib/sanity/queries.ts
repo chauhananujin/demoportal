@@ -1,4 +1,4 @@
-import { sanityClient } from "./client";
+import { sanityClient, isSanityConfigured } from "./client";
 
 export type Service = {
   _id: string;
@@ -21,6 +21,7 @@ export type CaseStudy = {
 };
 
 export async function getServicesByCategory(category: "sap" | "cloud"): Promise<Service[]> {
+  if (!isSanityConfigured) return [];
   return sanityClient.fetch(
     `*[_type == "service" && category == $category] | order(title asc) { _id, title, slug, category, summary, icon }`,
     { category }
@@ -28,6 +29,7 @@ export async function getServicesByCategory(category: "sap" | "cloud"): Promise<
 }
 
 export async function getServiceBySlug(slug: string): Promise<(Service & { body: unknown[] }) | null> {
+  if (!isSanityConfigured) return null;
   return sanityClient.fetch(
     `*[_type == "service" && slug.current == $slug][0] { _id, title, slug, category, summary, icon, body }`,
     { slug }
@@ -35,12 +37,14 @@ export async function getServiceBySlug(slug: string): Promise<(Service & { body:
 }
 
 export async function getAllCaseStudies(): Promise<CaseStudy[]> {
+  if (!isSanityConfigured) return [];
   return sanityClient.fetch(
     `*[_type == "caseStudy"] | order(publishedAt desc) { _id, title, slug, client, industry, services, summary, publishedAt }`
   );
 }
 
 export async function getCaseStudyBySlug(slug: string): Promise<(CaseStudy & { body: unknown[] }) | null> {
+  if (!isSanityConfigured) return null;
   return sanityClient.fetch(
     `*[_type == "caseStudy" && slug.current == $slug][0] { _id, title, slug, client, industry, services, summary, publishedAt, body }`,
     { slug }

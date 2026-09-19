@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.gstack/
+
+# test artifacts
+/test-results/
+/.playwright-mcp/
+
+# office lock files
+~$*

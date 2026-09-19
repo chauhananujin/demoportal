@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { WatchDemoButton } from "./watch-demo";
 
 export function Hero() {
   return (
@@ -13,18 +14,26 @@ export function Hero() {
       <p className="text-slate-400 text-lg max-w-xl mx-auto mb-10">
         End-to-end services from implementation and migration to 24/7 managed support — across SAP and all major cloud platforms.
       </p>
-      <div className="flex gap-4 justify-center">
-        <Link href="/contact">
+      <div className="flex flex-wrap gap-4 justify-center">
+        <Link href="/onboarding">
           <Button size="lg" className="bg-brand-primary hover:bg-brand-accent text-white font-semibold">
-            Get a Quote
+            Get Started
           </Button>
         </Link>
-        <Link href="/services/sap">
-          <Button size="lg" variant="outline" className="border-brand-primary text-brand-accent-light hover:bg-brand-surface">
-            Our Services
-          </Button>
-        </Link>
+        <WatchDemoButton variant="ghost" className="!text-base">
+          <span className="inline-flex items-center gap-2">
+            <span className="relative inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-accent/25 border border-brand-accent/40 text-brand-accent-light">
+              <svg width="9" height="9" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+                <path d="M2 1l5 3-5 3V1z" fill="currentColor" />
+              </svg>
+            </span>
+            <span>Watch demo · 69 sec</span>
+          </span>
+        </WatchDemoButton>
       </div>
+      <p className="text-xs text-slate-500 mt-5">
+        Self-serve onboarding · provision in minutes · cancel anytime
+      </p>
     </section>
   );
 }

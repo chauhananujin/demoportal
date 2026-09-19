@@ -2,11 +2,13 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/auth-context";
+import { usePortalTheme } from "@/lib/portal/theme-context";
 import { PortalSidebar } from "./sidebar";
-import { Chatbot } from "./chatbot";
+import { CommandPalette } from "./command-palette";
 
 export function PortalAuthGate({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+  const { theme } = usePortalTheme();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -30,10 +32,10 @@ export function PortalAuthGate({ children }: { children: React.ReactNode }) {
 
   // Authenticated portal shell
   return (
-    <div className="flex min-h-screen bg-[#0a1929]">
+    <div data-portal-theme={theme} className="flex min-h-screen bg-[#0a1929]">
       <PortalSidebar />
       <main className="flex-1 overflow-auto">{children}</main>
-      <Chatbot />
+      <CommandPalette />
     </div>
   );
 }

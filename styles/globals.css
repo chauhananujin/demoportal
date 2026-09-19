@@ -142,3 +142,171 @@
     @apply font-sans;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────
+ * Marketing site themes
+ *
+ * Default (no attribute) = midnight (the dark navy already on :root).
+ * Toggle re-skins by setting [data-marketing-theme] on <html>.
+ * All themes are intentionally muted — "lighter but not brighter".
+ * Light themes also flip hardcoded text-white / bg-white utilities
+ * so the existing dark-first markup remains readable.
+ * ───────────────────────────────────────────────────────────────── */
+
+/* slate — softer warm dark, indigo accent */
+[data-marketing-theme="slate"] {
+  --brand-bg:           #1B1D27;
+  --brand-surface:      #262835;
+  --brand-primary:      #6366F1;
+  --brand-accent:       #818CF8;
+  --brand-accent-light: #A5B4FC;
+}
+
+/* mist — muted cool gray-blue (light, not bright) */
+[data-marketing-theme="mist"] {
+  --brand-bg:           #E6EAF0;
+  --brand-surface:      #F1F3F7;
+  --brand-primary:      #0E7490;
+  --brand-accent:       #155E75;
+  --brand-accent-light: #0E7490;
+  color-scheme: light;
+}
+
+/* sand — muted warm cream (light, not bright) */
+[data-marketing-theme="sand"] {
+  --brand-bg:           #ECE5D8;
+  --brand-surface:      #F4EFE3;
+  --brand-primary:      #B45309;
+  --brand-accent:       #92400E;
+  --brand-accent-light: #78350F;
+  color-scheme: light;
+}
+
+/* Light marketing themes: flip dark-first utilities */
+[data-marketing-theme="mist"] .bg-white,
+[data-marketing-theme="sand"] .bg-white { background-color: var(--brand-surface); }
+
+[data-marketing-theme="mist"] .bg-slate-50,
+[data-marketing-theme="sand"] .bg-slate-50 { background-color: var(--brand-bg); }
+
+[data-marketing-theme="mist"] .text-white,
+[data-marketing-theme="sand"] .text-white { color: #0F172A; }
+[data-marketing-theme="mist"] .text-slate-200,
+[data-marketing-theme="sand"] .text-slate-200 { color: #1E293B; }
+[data-marketing-theme="mist"] .text-slate-300,
+[data-marketing-theme="sand"] .text-slate-300 { color: #334155; }
+[data-marketing-theme="mist"] .text-slate-400,
+[data-marketing-theme="sand"] .text-slate-400 { color: #475569; }
+[data-marketing-theme="mist"] .text-slate-500,
+[data-marketing-theme="sand"] .text-slate-500 { color: #64748B; }
+[data-marketing-theme="mist"] .text-slate-600,
+[data-marketing-theme="sand"] .text-slate-600 { color: #94A3B8; }
+
+[data-marketing-theme="mist"] .hover\:text-white:hover,
+[data-marketing-theme="sand"] .hover\:text-white:hover { color: #0F172A; }
+
+[data-marketing-theme="mist"] .bg-white\/3,
+[data-marketing-theme="sand"] .bg-white\/3 { background-color: rgb(15 23 42 / 0.025); }
+[data-marketing-theme="mist"] .bg-white\/4,
+[data-marketing-theme="sand"] .bg-white\/4 { background-color: rgb(15 23 42 / 0.03); }
+[data-marketing-theme="mist"] .bg-white\/5,
+[data-marketing-theme="sand"] .bg-white\/5 { background-color: rgb(15 23 42 / 0.035); }
+[data-marketing-theme="mist"] .bg-white\/6,
+[data-marketing-theme="sand"] .bg-white\/6 { background-color: rgb(15 23 42 / 0.04); }
+[data-marketing-theme="mist"] .bg-white\/8,
+[data-marketing-theme="sand"] .bg-white\/8 { background-color: rgb(15 23 42 / 0.05); }
+[data-marketing-theme="mist"] .bg-white\/10,
+[data-marketing-theme="sand"] .bg-white\/10 { background-color: rgb(15 23 42 / 0.06); }
+
+[data-marketing-theme="mist"] .border-white\/5,
+[data-marketing-theme="sand"] .border-white\/5 { border-color: rgb(15 23 42 / 0.06); }
+[data-marketing-theme="mist"] .border-white\/6,
+[data-marketing-theme="sand"] .border-white\/6 { border-color: rgb(15 23 42 / 0.07); }
+[data-marketing-theme="mist"] .border-white\/8,
+[data-marketing-theme="sand"] .border-white\/8 { border-color: rgb(15 23 42 / 0.09); }
+[data-marketing-theme="mist"] .border-white\/10,
+[data-marketing-theme="sand"] .border-white\/10 { border-color: rgb(15 23 42 / 0.1); }
+[data-marketing-theme="mist"] .border-white\/15,
+[data-marketing-theme="sand"] .border-white\/15 { border-color: rgb(15 23 42 / 0.14); }
+
+[data-marketing-theme="mist"] .border-brand-surface,
+[data-marketing-theme="sand"] .border-brand-surface { border-color: rgb(15 23 42 / 0.1); }
+
+[data-marketing-theme="mist"] img[src="/ascelios-logo.svg"],
+[data-marketing-theme="sand"] img[src="/ascelios-logo.svg"] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+ * Portal light theme
+ *
+ * The portal is built with dark-only utility classes (text-white,
+ * bg-white/N, border-white/N, etc.). To support a light mode without
+ * rewriting ~30 pages, we scope overrides to [data-portal-theme="light"]
+ * and remap those utilities. Brand tokens flip via CSS vars.
+ * ───────────────────────────────────────────────────────────────── */
+
+[data-portal-theme="light"] {
+  /* Brand surfaces */
+  --brand-bg:           #F8FAFC;  /* slate-50 */
+  --brand-surface:      #FFFFFF;
+  --brand-primary:      #0E7490;  /* darker cyan for contrast on white */
+  --brand-accent:       #0891B2;
+  --brand-accent-light: #0E7490;
+
+  color-scheme: light;
+}
+
+/* Background of the outer portal shell (currently hardcoded #0a1929).
+ * Both the descendant form and the compound form — the data-portal-theme
+ * attribute lives on the same element that has bg-[#0a1929], so the
+ * compound form (no space) is what actually flips the page bg. */
+[data-portal-theme="light"] .bg-\[\#0a1929\],
+[data-portal-theme="light"].bg-\[\#0a1929\] {
+  background-color: #F1F5F9; /* slate-100 */
+}
+
+/* Text colors — dark utilities flip to dark text on light bg */
+[data-portal-theme="light"] .text-white       { color: #0F172A; }
+[data-portal-theme="light"] .text-slate-200   { color: #1E293B; }
+[data-portal-theme="light"] .text-slate-300   { color: #334155; }
+[data-portal-theme="light"] .text-slate-400   { color: #475569; }
+[data-portal-theme="light"] .text-slate-500   { color: #64748B; }
+[data-portal-theme="light"] .text-slate-600   { color: #94A3B8; }
+[data-portal-theme="light"] .text-slate-700   { color: #1E293B; }
+
+/* Hover variants */
+[data-portal-theme="light"] .hover\:text-white:hover { color: #0F172A; }
+
+/* White-tint backgrounds become subtle dark-tint */
+[data-portal-theme="light"] .bg-white\/3   { background-color: rgb(15 23 42 / 0.025); }
+[data-portal-theme="light"] .bg-white\/4   { background-color: rgb(15 23 42 / 0.03); }
+[data-portal-theme="light"] .bg-white\/5   { background-color: rgb(15 23 42 / 0.035); }
+[data-portal-theme="light"] .bg-white\/6   { background-color: rgb(15 23 42 / 0.04); }
+[data-portal-theme="light"] .bg-white\/8   { background-color: rgb(15 23 42 / 0.05); }
+[data-portal-theme="light"] .bg-white\/10  { background-color: rgb(15 23 42 / 0.06); }
+
+[data-portal-theme="light"] .hover\:bg-white\/5:hover   { background-color: rgb(15 23 42 / 0.04); }
+[data-portal-theme="light"] .hover\:bg-white\/10:hover  { background-color: rgb(15 23 42 / 0.06); }
+
+/* Borders — flip white opacity to dark opacity for visible separation */
+[data-portal-theme="light"] .border-white\/5   { border-color: rgb(15 23 42 / 0.06); }
+[data-portal-theme="light"] .border-white\/6   { border-color: rgb(15 23 42 / 0.07); }
+[data-portal-theme="light"] .border-white\/8   { border-color: rgb(15 23 42 / 0.09); }
+[data-portal-theme="light"] .border-white\/10  { border-color: rgb(15 23 42 / 0.10); }
+[data-portal-theme="light"] .border-white\/15  { border-color: rgb(15 23 42 / 0.14); }
+
+[data-portal-theme="light"] .hover\:border-white\/20:hover { border-color: rgb(15 23 42 / 0.20); }
+
+/* Form placeholders — slate-600 on white is too light to read */
+[data-portal-theme="light"] .placeholder-slate-600::placeholder { color: #94A3B8; }
+
+/* Brand-surface borders ("border-brand-surface" stays via CSS var, but the
+ * dark hex needs to switch to a visible separator on light) */
+[data-portal-theme="light"] .border-brand-surface { border-color: #E2E8F0; }
+
+/* Sidebar logo image — the embedded wordmark fills are white. Apply a
+ * subtle invert so the cyan hex mark still pops while text reads as dark. */
+[data-portal-theme="light"] img[src="/ascelios-logo.svg"] {
+  filter: invert(1) hue-rotate(180deg);
+}

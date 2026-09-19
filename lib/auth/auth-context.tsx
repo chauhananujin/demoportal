@@ -5,7 +5,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import type { Role } from "@/lib/tickets/types";
-import { DEMO_ACCOUNTS } from "./accounts";
+import { useUserDirectory } from "./user-directory";
 
 const SESSION_KEY = "ascelios_session";
 
@@ -28,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { findByCredentials } = useUserDirectory();
 
   useEffect(() => {
     const raw = localStorage.getItem(SESSION_KEY);
@@ -39,9 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(
     async (email: string, password: string): Promise<"ok" | "invalid"> => {
-      const account = DEMO_ACCOUNTS.find(
-        (a) => a.email === email.trim().toLowerCase() && a.password === password,
-      );
+      const account = findByCredentials(email, password);
       if (!account) return "invalid";
       const session: AuthUser = {
         email: account.email,
@@ -52,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(session);
       return "ok";
     },
-    [],
+    [findByCredentials],
   );
 
   const logout = useCallback(() => {

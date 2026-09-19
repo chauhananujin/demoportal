@@ -10,7 +10,8 @@ export type PortalAction =
   | "request:provision"
   | "request:sap-operation"
   | "request:infra-operation"
-  | "request:add-funds";
+  | "request:add-funds"
+  | "manage:users";
 
 export interface TicketApprovalStep {
   by: string;
