@@ -325,6 +325,18 @@ function ResourceDetailPanel({
           <span className="text-xs text-slate-600 ml-auto">Created {resource.created}</span>
         </div>
 
+        {resource.type === "Kubernetes" && resource.status === "active" && (
+          <div className="shrink-0 px-5 py-3 border-b border-white/6">
+            <Link
+              href="/portal/infrastructure/kubernetes/prod-eks-cluster"
+              className="flex items-center justify-center gap-1.5 text-xs text-brand-accent hover:text-white border border-brand-accent/20 hover:border-brand-accent/40 hover:bg-brand-accent/10 rounded-lg py-2 transition-colors"
+            >
+              Open Kubernetes Dashboard
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M4 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </Link>
+          </div>
+        )}
+
         {/* Charts section — scrollable */}
         <div className="flex-1 overflow-y-auto">
           {metrics.note === "provisioning" ? (
@@ -444,6 +456,17 @@ export default function InfrastructurePage() {
                   <p className="text-slate-500 font-mono text-[11px]">{r.id}</p>
                 </div>
               </div>
+
+              {r.type === "Kubernetes" && r.status === "active" && (
+                <Link
+                  href="/portal/infrastructure/kubernetes/prod-eks-cluster"
+                  onClick={(e) => e.stopPropagation()}
+                  className="mt-4 flex items-center justify-center gap-1.5 text-xs text-brand-accent hover:text-white border border-brand-accent/20 hover:border-brand-accent/40 hover:bg-brand-accent/10 rounded-lg py-2 transition-colors"
+                >
+                  Open Kubernetes Dashboard
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M4 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </Link>
+              )}
             </div>
           );
         })}
